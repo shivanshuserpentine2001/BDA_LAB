@@ -1,0 +1,113 @@
+bmsce@bmsce-Precision-T1700:~$ CQLSH
+CQLSH: command not found
+bmsce@bmsce-Precision-T1700:~$ cqlsh
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.4 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+
+
+
+1....
+cqlsh:employee> CREATE TABLE EMPLOYEE_INFO( EMP_ID VARCHAR PRIMARY KEY, EMP_NAME TEXT, DESIGNATION TEXT, DATE_OF_JOINING TIMESTAMP, SALARY FLOAT, DEPT_NAME TEXT);
+AlreadyExists: Table 'employee.employee_info' already exists
+
+
+2.....
+cqlsh:employee> CREATE TABLE EMPLOYEEINFO( EMP_ID VARCHAR PRIMARY KEY, EMP_NAME TEXT, DESIGNATION TEXT, DATE_OF_JOINING TIMESTAMP, SALARY FLOAT, DEPT_NAME TEXT);
+
+
+3.....
+cqlsh:employee> INSERT INTO  EMPLOYEEINFO( EMP_ID,  EMP_NAME , DESIGNATION , DATE_OF_JOINING , SALARY , DEPT_NAME ) VALUES('123', 'SHWETA', 'MANAGER', '2021-04-09',65000.20, 'MANAGEMENT')
+
+cqlsh:employee> SELECT * FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name  | designation | emp_name | salary
+--------+---------------------------------+------------+-------------+----------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 | MANAGEMENT |     MANAGER |   SHWETA | 65000.19922
+
+(1 rows)
+cqlsh:employee> UPDATE EMPLOYEEINFO SET EMP_NAME='PATIL', DEPT_NAME='IMPORT' WHERE EMP_ID='121';
+cqlsh:employee> SELECT * FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name  | designation | emp_name | salary
+--------+---------------------------------+------------+-------------+----------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 | MANAGEMENT |     MANAGER |   SHWETA | 65000.19922
+    121 |                            null |     IMPORT |        null |    PATIL |        null
+
+(2 rows)
+
+
+4....
+cqlsh:employee> UPDATE EMPLOYEEINFO SET EMP_NAME='PATIL', DEPT_NAME='IMPORT' WHERE EMP_ID='123';
+cqlsh:employee> SELECT * FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name | designation | emp_name | salary
+--------+---------------------------------+-----------+-------------+----------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 |    IMPORT |     MANAGER |    PATIL | 65000.19922
+    121 |                            null |    IMPORT |        null |    PATIL |        null
+
+(2 rows)
+
+cqlsh:employee> SELECT * FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name  | designation | emp_name | salary
+--------+---------------------------------+------------+-------------+----------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 |     IMPORT |     MANAGER |    PATIL | 65000.19922
+    121 |                            null |     IMPORT |        null |    PATIL |        null
+    141 | 2021-04-08 18:30:00.000000+0000 | MANAGEMENT |         CEO |     SONU | 65000.19922
+
+(3 rows)
+cqlsh:employee> INSERT INTO  EMPLOYEEINFO( EMP_ID,  EMP_NAME , DESIGNATION , DATE_OF_JOINING , SALARY , DEPT_NAME ) VALUES('141', 'SONU', 'CEO', '2021-04-09',35000.20, 'MANAGEMENT');
+cqlsh:employee> SELECT * FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name  | designation | emp_name | salary
+--------+---------------------------------+------------+-------------+----------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 |     IMPORT |     MANAGER |    PATIL | 65000.19922
+    121 |                            null |     IMPORT |        null |    PATIL |        null
+    141 | 2021-04-08 18:30:00.000000+0000 | MANAGEMENT |         CEO |     SONU | 35000.19922
+
+(3 rows)
+
+
+6...
+            ... 
+cqlsh:employee> ALTER TABLE EMPLOYEEINFO ADD PROJECTS TEXT;
+
+cqlsh:employee> SELECT *FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name  | designation | emp_name | projects | salary
+--------+---------------------------------+------------+-------------+----------+----------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 |     IMPORT |     MANAGER |    PATIL |     null | 65000.19922
+    121 |                            null |     IMPORT |        null |    PATIL |     null |        null
+    141 | 2021-04-08 18:30:00.000000+0000 | MANAGEMENT |         CEO |     SONU |     null | 35000.19922
+
+(3 rows)
+
+
+
+
+cqlsh:employee> UPDATE EMPLOYEEINFO SET PROJECTS='MACHINE LEARNING' WHERE EMP_ID='123';
+cqlsh:employee> SELECT *FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name  | designation | emp_name | projects         | salary
+--------+---------------------------------+------------+-------------+----------+------------------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 |     IMPORT |     MANAGER |    PATIL | MACHINE LEARNING | 65000.19922
+    121 |                            null |     IMPORT |        null |    PATIL |             null |        null
+    141 | 2021-04-08 18:30:00.000000+0000 | MANAGEMENT |         CEO |     SONU |             null | 35000.19922
+
+(3 rows)
+
+7.....
+cqlsh:employee> UPDATE EMPLOYEEINFO SET PROJECTS='AI' WHERE EMP_ID='141';
+cqlsh:employee> SELECT *FROM EMPLOYEEINFO;
+
+ emp_id | date_of_joining                 | dept_name  | designation | emp_name | projects         | salary
+--------+---------------------------------+------------+-------------+----------+------------------+-------------
+    123 | 2021-04-08 18:30:00.000000+0000 |     IMPORT |     MANAGER |    PATIL | MACHINE LEARNING | 65000.19922
+    121 |                            null |     IMPORT |        null |    PATIL |             null |        null
+    141 | 2021-04-08 18:30:00.000000+0000 | MANAGEMENT |         CEO |     SONU |               AI | 35000.19922
+
+(3 rows)
+cqlsh:employee> 
+
+

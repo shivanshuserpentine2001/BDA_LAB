@@ -1,0 +1,97 @@
+bmsce@bmsce-Precision-T1700:~$ cqlsh
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.5 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh> create keyspace employee with replication ={'class':'SimpleStrategy', 'replication_factor':1};
+cqlsh> use employee;
+cqlsh:employee> create table employee_info(emp_id int,emp_name text, designation text, doj timestamp, salary double, dept_name text, primary key(emp_id));
+cqlsh:employee> BEGIN BATCH
+            ... INSERT INTO employee_info(emp_id, emp_name, designation, doj, salary, dept_name) VALUES
+            ... (121, 'Ravi', 'Manager', '2012-03-29', 200000, 'RD')
+            ... INSERT INTO employee_info(emp_id, emp_name, designation, doj, salary, dept_name) VALUES
+            ... (122, 'David', 'Worker', '2013-02-27', 20000, 'Transport')
+            ... APPLY BATCH;
+cqlsh:employee> DESCRIBE TABLE employee_info
+
+CREATE TABLE employee.employee_info (
+    emp_id int PRIMARY KEY,
+    dept_name text,
+    designation text,
+    doj timestamp,
+    emp_name text,
+    salary double
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+cqlsh:employee> SELECT * FROM employee_info
+            ... ;
+
+ emp_id | dept_name | designation | doj                             | emp_name | salary
+--------+-----------+-------------+---------------------------------+----------+--------
+    122 | Transport |      Worker | 2013-02-26 18:30:00.000000+0000 |    David |  20000
+    121 |        RD |     Manager | 2012-03-28 18:30:00.000000+0000 |     Ravi |  2e+05
+
+(2 rows)
+cqlsh:employee> update employee_info set emp_name='Ravi S' and dept_name='Research' where emp_id=121;
+SyntaxException: line 1:43 mismatched input 'and' expecting K_WHERE (update employee_info set emp_name='Ravi S' [and]...)
+cqlsh:employee> update employee_info set emp_name='Ravi S',dept_name='Research' where emp_id=121;
+cqlsh:employee> SELECT * FROM employee_info ;
+
+ emp_id | dept_name | designation | doj                             | emp_name | salary
+--------+-----------+-------------+---------------------------------+----------+--------
+    122 | Transport |      Worker | 2013-02-26 18:30:00.000000+0000 |    David |  20000
+    121 |  Research |     Manager | 2012-03-28 18:30:00.000000+0000 |   Ravi S |  2e+05
+
+(2 rows)
+cqlsh:employee> SELECT * FROM employee_info ORDER BY salary ASC;
+InvalidRequest: Error from server: code=2200 [Invalid query] message="ORDER BY is only supported when the partition key is restricted by an EQ or an IN."
+cqlsh:employee> SELECT * FROM employee_info ORDER BY employee_info.salary ASC;
+SyntaxException: line 1:50 mismatched input '.' expecting EOF (... FROM employee_info ORDER BY employee_info[.]...)
+cqlsh:employee> alter table employee_info add projects text;
+cqlsh:employee> describe table employee_info;
+
+CREATE TABLE employee.employee_info (
+    emp_id int PRIMARY KEY,
+    dept_name text,
+    designation text,
+    doj timestamp,
+    emp_name text,
+    projects text,
+    salary double
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+cqlsh:employee> update employee_info set projects='HPE' WHERE emp_id=121;
+cqlsh:employee> update employee_info set projects='Shipment' WHERE emp_id=122;
+cqlsh:employee> SELECT * FROM employee_info;
+
+ emp_id | dept_name | designation | doj                             | emp_name | projects | salary
+--------+-----------+-------------+---------------------------------+----------+----------+--------
+    122 | Transport |      Worker | 2013-02-26 18:30:00.000000+0000 |    David | Shipment |  20000
+    121 |  Research |     Manager | 2012-03-28 18:30:00.000000+0000 |   Ravi S |      HPE |  2e+05
+
+(2 rows)

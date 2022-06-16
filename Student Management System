@@ -1,0 +1,137 @@
+class Student:
+  def __init__(self,name,rollno,m1,m2):
+    self.name=name
+    self.rollno=rollno
+    self.m1=m1
+    self.m2=m2
+
+  def accept(self,name,rollno,m1,m2):
+    ob=Student(name,rollno,m1,m2)
+    ls.append(ob)
+
+  def display(self,ob):
+    print("Name: ",ob.name)
+    print("RollNo ",ob.rollno)
+    print("Marks1 ",ob.m1)
+    print("Marks2 ",ob.m2)
+    print("\n")
+
+  def search(self,rn):
+    for i in range (ls.__len__()):
+      if(ls[i].rollno ==rn):
+        return i
+
+  def delete(self,rn):
+    i=obj.search(rn)
+    del ls[i]
+
+  def update(self,rn,No):
+    i=obj.search(rn)
+    roll=No
+    ls[i].rollno=roll;
+
+ls=[]
+obj=Student('',0,0,0)
+
+print("\n Operations Used, ")
+print("\n1. Accept Students details \n2.Display Students details  \n3.Search Details of a student \n4.Delete of Student \n5.Update StudentsDetails \n6.Exit")
+
+obj.accept("A",1,100,100)
+obj.accept("B",2,90,90)
+obj.accept("C",3,80,80)
+
+print("\n List of Students\n")
+for i in range (ls.__len__()):
+  obj.display(ls[i])
+
+print("\n Studnet Found, ")
+s=obj.search(2)
+obj.display(ls[s])
+
+obj.delete(2)
+print(ls.__len__())
+print("List after deletion")
+for i in range (ls.__len__()):
+  obj.display(ls[i])
+
+obj.update(3,2)
+print(ls.__len__())
+print("List after Updation ")
+for i in range (ls.__len__()):
+  obj.display(ls[i])
+
+print("Thank You")
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                 Output
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Operations Used, 
+
+1. Accept Students details 
+2.Display Students details  
+3.Search Details of a student 
+4.Delete of Student 
+5.Update StudentsDetails 
+6.Exit
+
+ List of Students
+
+Name:  A
+RollNo  1
+Marks1  100
+Marks2  100
+
+
+Name:  B
+RollNo  2
+Marks1  90
+Marks2  90
+
+
+Name:  C
+RollNo  3
+Marks1  80
+Marks2  80
+
+
+
+ Studnet Found, 
+Name:  B
+RollNo  2
+Marks1  90
+Marks2  90
+
+
+2
+List after deletion
+Name:  A
+RollNo  1
+Marks1  100
+Marks2  100
+
+
+Name:  C
+RollNo  3
+Marks1  80
+Marks2  80
+
+
+2
+List after Updation 
+Name:  A
+RollNo  1
+Marks1  100
+Marks2  100
+
+
+Name:  C
+RollNo  2
+Marks1  80
+Marks2  80
+
+
+Thank You
+..

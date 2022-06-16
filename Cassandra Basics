@@ -1,0 +1,76 @@
+cqlsh> create keyspace employee with replication = { 'class': 'SimpleStrategy','replication_factor':1 };
+AlreadyExists: Keyspace 'employee' already exists
+cqlsh> use employee;
+cqlsh:employee> create table employee-info (empid int, empname text, desig text, doj timestamp, salary double, deptname text, primary key (empid));
+SyntaxException: line 1:21 no viable alternative at input '-' (create table [employee]-...)
+cqlsh:employee> create table employeeinfo (empid int, empname text, desig text, doj timestamp, salary double, deptname text, primary key (empid));
+cqlsh:employee> begin batch
+            ... insert into employeeinfo(empid,empname,desig,doj,salary,deptname) values (101,'Skanda','CEO','2020-03-29',2500000,'R&D')
+            ... insert into employeeinfo(empid,empname,desig,doj,salary,deptname) values (121,'Balaji','Staffing','2180-05-09',520000,'Transport')
+            ... insert into employeeinfo(empid,empname,desig,doj,salary,deptname) values (115,'Rohan','Manager','2015-07-07',270000,'Medical')
+            ... Apply batch;
+cqlsh:employee> describe table employeeinfo
+
+CREATE TABLE employee.employeeinfo (
+    empid int PRIMARY KEY,
+    deptname text,
+    desig text,
+    doj timestamp,
+    empname text,
+    salary double
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+cqlsh:employee> select * from employeeinfo
+            ... ;
+
+ empid | deptname  | desig    | doj                             | empname | salary
+-------+-----------+----------+---------------------------------+---------+---------
+   121 | Transport | Staffing | 2180-05-08 18:30:00.000000+0000 |  Balaji | 5.2e+05
+   115 |   Medical |  Manager | 2015-07-06 18:30:00.000000+0000 |   Rohan | 2.7e+05
+   101 |       R&D |      CEO | 2020-03-28 18:30:00.000000+0000 |  Skanda | 2.5e+06
+
+(3 rows)
+cqlsh:employee> select * from employeeinfo order by salary asc;
+InvalidRequest: Error from server: code=2200 [Invalid query] message="ORDER BY is only supported when the partition key is restricted by an EQ or an IN."
+cqlsh:employee> select * from employeeinfo order by empid asc;
+InvalidRequest: Error from server: code=2200 [Invalid query] message="ORDER BY is only supported when the partition key is restricted by an EQ or an IN."
+cqlsh:employee> 
+cqlsh:employee> select * from employeeinfo order by in empid asc;
+SyntaxException: line 1:36 no viable alternative at input 'in' (...* from employeeinfo order by [in]...)
+cqlsh:employee> alter table employeeinfo add projects text;
+cqlsh:employee> select * from employeeinfo ;
+
+ empid | deptname  | desig    | doj                             | empname | projects | salary
+-------+-----------+----------+---------------------------------+---------+----------+---------
+   121 | Transport | Staffing | 2180-05-08 18:30:00.000000+0000 |  Balaji |     null | 5.2e+05
+   115 |   Medical |  Manager | 2015-07-06 18:30:00.000000+0000 |   Rohan |     null | 2.7e+05
+   101 |       R&D |      CEO | 2020-03-28 18:30:00.000000+0000 |  Skanda |     null | 2.5e+06
+
+(3 rows)
+cqlsh:employee> update employeeinfo set projects='Cassandra' where empid = 101
+            ... ;
+cqlsh:employee> update employeeinfo set projects='Andriod' where empid = 121 ;
+cqlsh:employee> update employeeinfo set projects='DevOps' where empid = 115 ;
+cqlsh:employee> select * from employeeinfo ;
+
+ empid | deptname  | desig    | doj                             | empname | projects  | salary
+-------+-----------+----------+---------------------------------+---------+-----------+---------
+   121 | Transport | Staffing | 2180-05-08 18:30:00.000000+0000 |  Balaji |   Andriod | 5.2e+05
+   115 |   Medical |  Manager | 2015-07-06 18:30:00.000000+0000 |   Rohan |    DevOps | 2.7e+05
+   101 |       R&D |      CEO | 2020-03-28 18:30:00.000000+0000 |  Skanda | Cassandra | 2.5e+06
+
+(3 rows)
+cqlsh:employee> 

@@ -1,0 +1,169 @@
+bmsce@bmsce-Precision-T1700:~$ cqlsh
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.4 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh> CREATE KEYSPACE LIBRARY WITH REPLICATION
+   ... 
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+Statements are terminated with a ';'.  You can press CTRL-C to cancel an incomplete statement.
+   ... 
+   ... 
+   ... 
+cqlsh> CREATE KEYSPACE LIBRARY WITH REPLICATION=['CLASS':'SIMPLESTRATERGY', 'REPLICATION_FACTOR':1);
+SyntaxException: line 1:41 no viable alternative at input '[' (CREATE KEYSPACE LIBRARY WITH [REPLICATION]=[...)
+cqlsh> CREATE KEYSPACE LIBRARY WITH REPLICATION=['CLASS':'Simplestratergy', 'replication_factor':1);SyntaxException: line 1:41 no viable alternative at input '[' (CREATE KEYSPACE LIBRARY WITH [REPLICATION]=[...)
+cqlsh> CREATE KEYSPACE LIBRARY WITH REPLICATION={'CLASS':'Simplestratergy', 'replication_factor':1};ConfigurationException: Missing mandatory replication strategy class
+cqlsh> CREATE KEYSPACE LIBRARY WITH REPLICATION=['class':'Simplestratergy', 'replication_factor':1);SyntaxException: line 1:41 no viable alternative at input '[' (CREATE KEYSPACE LIBRARY WITH [REPLICATION]=[...)
+cqlsh> create keyspace library with replication={'class':'SimpleStratergy','replication_factor':1};
+ConfigurationException: Unable to find replication strategy class 'org.apache.cassandra.locator.SimpleStratergy'
+cqlsh> use library
+   ... 
+   ... 
+   ... 
+   ... 
+cqlsh> CREATE KEYSPACE LIBRARY WITH REPLICATION=['class':'Simplestratergy', 'replication_factor':1); 
+cqlsh> CREATE KEYSPACE Library WITH REPLICATION=['class':'SimpleStratergy', 'replication_factor':1);
+SyntaxException: line 1:41 no viable alternative at input '[' (CREATE KEYSPACE Library WITH [REPLICATION]=[...)
+cqlsh> CREATE KEYSPACE Library WITH REPLICATION = {'class':'SimpleStratergy', 'replication_factor':1};
+ConfigurationException: Unable to find replication strategy class 'org.apache.cassandra.locator.SimpleStratergy'
+cqlsh> CREATE KEYSPACE Library WITH REPLICATION = {'class':'SimpleStratergy', 'replication_factor':1};
+cqlsh> CREATE KEYSPACE Library WITH REPLICATION = {
+   ... 'class':'SimpleStratergy',
+   ... 'replication_factor':1
+   ... };
+ConfigurationException: Unable to find replication strategy class 'org.apache.cassandra.locator.SimpleStratergy'
+cqlsh> CREATE KEYSPACE Library WITH REPLICATION = { 'class':'SimpleStrategy', 'replication_factor':1 };
+cqlsh> use Library
+   ... 
+cqlsh> use Library;
+cqlsh:library> CREATE TABLE Library_info (
+           ... Stud_id varchar PRIMARY KEY,
+           ... Counter_value counter;
+SyntaxException: line 3:21 mismatched input ';' expecting ')'
+cqlsh:library> CREATE TABLE Library_info ( Stud_id varchar PRIMARY KEY, Counter_value counter);
+cqlsh:library> SELECT * FROM lIBRARY_INFO
+           ... SELECT * FROM lIBRARY_INFO;
+SyntaxException: line 2:0 no viable alternative at input 'SELECT' (SELECT * FROM [lIBRARY_INFO]SELECT...)
+cqlsh:library> SELECT * FROM Library_info;
+
+ stud_id | counter_value
+---------+---------------
+
+(0 rows)
+cqlsh:library> begin batch
+           ... 
+           ... ;
+           ... 
+cqlsh:library> CREATE TABLE Libraryinfo ( Stud_id varchar PRIMARY KEY, Counter_value counter, Stud_nmae text, Book_name text, Book_id varchar, Date_of_issue timestamp);
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Cannot mix counter and non counter columns in the same table"
+cqlsh:library> CREATE TABLE Libraryinfo ( Stud_id varchar, Counter_value counter, Stud_nmae text, Book_name text, Book_id varchar, Date_of_issue timestamp,PRIMARY KEY(Stud_id, Stud_nmae, book_nmae, Book_id, Date_of_issue));
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Unknown definition book_nmae referenced in PRIMARY KEY"
+cqlsh:library> CREATE TABLE Libraryinfo ( Stud_id varchar, Counter_value counter, Stud_nmae text, Book_name text, Book_id varchar, Date_of_issue timestamp,PRIMARY KEY(Stud_id, Stud_name, book_nmae, Book_id, Date_of_issue));
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Unknown definition stud_name referenced in PRIMARY KEY"
+cqlsh:library> CREATE TABLE Libraryinfo ( Stud_id varchar, Counter_value counter, Stud_name text, Book_name text, Book_id varchar, Date_of_issue timestamp,PRIMARY KEY(Stud_id, Stud_name, book_nmae, Book_id, Date_of_issue));
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Unknown definition book_nmae referenced in PRIMARY KEY"
+cqlsh:library> CREATE TABLE Libraryinfo ( Stud_id varchar, Counter_value counter, Stud_name text, Book_name text, Book_id varchar, Date_of_issue timestamp,PRIMARY KEY(Stud_id, Stud_name, book_nmae, Book_id, Date_of_issue));
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Unknown definition book_nmae referenced in PRIMARY KEY"
+cqlsh:library> 
+cqlsh:library> CREATE TABLE Libraryinfo ( Stud_id varchar, Counter_value counter, Stud_name text, Book_name text, Book_id varchar, Date_of_issue timestamp, PRIMARY KEY(Stud_id, Stud_name, book_nmae, Book_id, Date_of_issue));
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Unknown definition book_nmae referenced in PRIMARY KEY"
+cqlsh:library> CREATE TABLE Libraryinfo ( Stud_id varchar, Counter_value counter, Stud_name text, Book_name text, Book_id varchar, Date_of_issue timestamp, PRIMARY KEY(Stud_id, Stud_name, book_name, Book_id, Date_of_issue));
+cqlsh:library> INSERT INTO Librayinfo (
+           ... 
+cqlsh:library> INSERT INTO Librayinfo (Stud_id, counter_value, Stud_name, Book_name, Book_id, Date_of_issue)
+           ... VALUES('123', , SHWETA, HELLO, '124', '2001-04-09');
+SyntaxException: line 2:14 no viable alternative at input ',' (..., Date_of_issue)VALUES('123', [,]...)
+cqlsh:library> INSERT INTO Librayinfo (Stud_id, counter_value, Stud_name, Book_name, Book_id, Date_of_issue) VALUES('123', , SHWETA, HELLO, '124', '2001-04-09');
+SyntaxException: line 1:108 no viable alternative at input ',' (..., Date_of_issue) VALUES('123', [,]...)
+cqlsh:library> INSERT INTO Librayinfo (Stud_id, counter_value, Stud_name, Book_name, Book_id, Date_of_issue) VALUES('123', SHWETA, HELLO, '124', '2001-04-09');
+SyntaxException: line 1:114 no viable alternative at input ',' (..., Date_of_issue) VALUES('123', [SHWETA],...)
+cqlsh:library> INSERT INTO Librayinfo (Stud_id, counter_value, Stud_name, Book_name, Book_id, Date_of_issue) VALUES (123, SHWETA, HELLO, 124, '2001-04-09');
+SyntaxException: line 1:113 no viable alternative at input ',' (... Date_of_issue) VALUES (123, [SHWETA],...)
+cqlsh:library> UPDATE Library.Libraryinfo SET counter_value=counter_value=1 WHERE Stud-id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002-04-09);
+           ... 
+cqlsh:library> UPDATE Library.Libraryinfo SET counter_value=counter_value+1 WHERE Stud-id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002-04-09);
+           ... 
+cqlsh:library> UPDATE Library.Libraryinfo SET counter_value=counter_value+1 WHERE Stud-id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002-04-09);
+           ... 
+cqlsh:library> UPDATE Libraryinfo SET counter_value=counter_value+1 WHERE Stud-id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002-04-09';
+SyntaxException: line 1:63 no viable alternative at input '-' (...SET counter_value=counter_value+1 WHERE [Stud]-...)
+cqlsh:library> UPDATE Libraryinfo SET counter_value=counter_value+1 WHERE Stud-id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002-04-09';
+SyntaxException: line 1:63 no viable alternative at input '-' (...SET counter_value=counter_value+1 WHERE [Stud]-...)
+cqlsh:library> select * from LIBRARYINFO
+           ... ;
+
+ stud_id | stud_name | book_name | book_id | date_of_issue | counter_value
+---------+-----------+-----------+---------+---------------+---------------
+
+(0 rows)
+cqlsh:library> UPDATE Libraryinfo SET counter_value=counter_value+1 WHERE Stud_id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002-04-09';
+cqlsh:library> select * from LIBRARYINFO ;
+
+ stud_id | stud_name | book_name  | book_id | date_of_issue                   | counter_value
+---------+-----------+------------+---------+---------------------------------+---------------
+   cs123 |    shweta | unfinished |   ds123 | 2002-04-08 18:30:00.000000+0000 |             1
+
+(1 rows)
+cqlsh:library> UPDATE Libraryinfo SET counter_value=counter_value+1 WHERE Stud_id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002-04-09';
+cqlsh:library> select * from LIBRARYINFO ;
+
+ stud_id | stud_name | book_name  | book_id | date_of_issue                   | counter_value
+---------+-----------+------------+---------+---------------------------------+---------------
+   cs123 |    shweta | unfinished |   ds123 | 2002-04-08 18:30:00.000000+0000 |             2
+
+(1 rows)
+cqlsh:library> UPDATE Libraryinfo SET counter_value=counter_value+1 WHERE Stud_id='cs123' AND Stud_name='shweta' AND Book_name='unfinished' AND Book_id='ds123' AND Date_of_issue='2002
+cqlsh:library> UPDATE Libraryinfo SET counter_value=counter_value+1 WHERE Stud_id='cs125' AND Stud_name='rahul' AND Book_name='hellothere' AND Book_id='ds124' AND Date_of_issue='2012-05-10';
+cqlsh:library> select * from LIBRARYINFO ;
+
+ stud_id | stud_name | book_name  | book_id | date_of_issue                   | counter_value
+---------+-----------+------------+---------+---------------------------------+---------------
+   cs125 |     rahul | hellothere |   ds124 | 2012-05-09 18:30:00.000000+0000 |             1
+   cs123 |    shweta | unfinished |   ds123 | 2002-04-08 18:30:00.000000+0000 |             2
+
+(2 rows)
+cqlsh:library> select counter_value  from LIBRARYINFO WHERE Book_name='unfinished' ;
+InvalidRequest: Error from server: code=2200 [Invalid query] message="PRIMARY KEY column "book_name" cannot be restricted as preceding column "stud_name" is not restricted"
+cqlsh:library> select *  from LIBRARYINFO WHERE Stud_id='cs123' ;
+
+ stud_id | stud_name | book_name  | book_id | date_of_issue                   | counter_value
+---------+-----------+------------+---------+---------------------------------+---------------
+   cs123 |    shweta | unfinished |   ds123 | 2002-04-08 18:30:00.000000+0000 |             2
+
+(1 rows)
+cqlsh:library> 
+

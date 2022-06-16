@@ -1,0 +1,171 @@
+mongo
+MongoDB shell version v3.6.8
+connecting to: mongodb://127.0.0.1:27017
+Implicit session: session { "id" : UUID("5ebf268a-bf4d-443f-9294-c1d3cc177238") }
+MongoDB server version: 3.6.8
+Server has startup warnings: 
+2022-04-12T09:15:20.557+0530 I STORAGE  [initandlisten] 
+2022-04-12T09:15:20.557+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2022-04-12T09:15:20.557+0530 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2022-04-12T09:15:24.891+0530 I CONTROL  [initandlisten] 
+2022-04-12T09:15:24.891+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2022-04-12T09:15:24.892+0530 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2022-04-12T09:15:24.892+0530 I CONTROL  [initandlisten] 
+> show dbs;
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+mitdb   0.000GB
+myDB    0.000GB
+> use myDB;
+switched to db myDB
+> db.createCollection("Ravi");
+{ "ok" : 1 }
+> show dbs;
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+mitdb   0.000GB
+myDB    0.000GB
+> db.Ravi.drop();
+true
+> db.createCollection("student");
+{
+	"ok" : 0,
+	"errmsg" : "a collection 'myDB.student' already exists",
+	"code" : 48,
+	"codeName" : "NamespaceExists"
+}
+> db.student.insert({id:1,StudName:"Ravi",Grade:"S",Hobbies:"Telling LIES"})
+WriteResult({ "nInserted" : 1 })
+> db.student.count()
+2
+> db.student.update({id:2,StudName:"Rohan",Grade:"S",Hobbies:"Skipping classes"})
+2022-04-12T09:30:33.540+0530 E QUERY    [thread1] Error: need an object :
+DBCollection.prototype._parseUpdate@src/mongo/shell/collection.js:443:1
+DBCollection.prototype.update@src/mongo/shell/collection.js:483:18
+@(shell):1:1
+> db.student.update({id:2,StudName:"Rohan",Grade:"S",Hobbies:"Skipping classes"});
+2022-04-12T09:30:56.626+0530 E QUERY    [thread1] Error: need an object :
+DBCollection.prototype._parseUpdate@src/mongo/shell/collection.js:443:1
+DBCollection.prototype.update@src/mongo/shell/collection.js:483:18
+@(shell):1:1
+> db.student.count();
+2
+> db.student.insert({id:2,StudName:"Rohan",Grade:"S",Hobbies:"Skipping classes"});
+WriteResult({ "nInserted" : 1 })
+> 
+> db.student.count();
+3
+> db.student.update({id:2,StudName:"Rohan",Grade:"S",Hobbies:"eating"});
+2022-04-12T09:34:11.412+0530 E QUERY    [thread1] Error: need an object :
+DBCollection.prototype._parseUpdate@src/mongo/shell/collection.js:443:1
+DBCollection.prototype.update@src/mongo/shell/collection.js:483:18
+@(shell):1:1
+> db.student.update({id:2,StudName:"Rohan",Grade:"S"},{$set:{Hobbies:"Skating"}},{upsert:true});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.student.find({StudName:"Ravi"});
+{ "_id" : ObjectId("6254f83d02962b4d0e5d6665"), "id" : 1, "StudName" : "Ravi", "Grade" : "S", "Hobbies" : "Telling LIES" }
+> db.student.find({})
+{ "_id" : 1, "studname" : "Mithun", "grade" : "vii", "hobbies" : "internetsurfing" }
+{ "_id" : ObjectId("6254f83d02962b4d0e5d6665"), "id" : 1, "StudName" : "Ravi", "Grade" : "S", "Hobbies" : "Telling LIES" }
+{ "_id" : ObjectId("6254f9c102962b4d0e5d6666"), "id" : 2, "StudName" : "Rohan", "Grade" : "S", "Hobbies" : "Skating" }
+> db.student.find({grade:{$eq:"S"}}).pretty();
+> db.student.find({Grade:{$eq:"S"}}).pretty();
+{
+	"_id" : ObjectId("6254f83d02962b4d0e5d6665"),
+	"id" : 1,
+	"StudName" : "Ravi",
+	"Grade" : "S",
+	"Hobbies" : "Telling LIES"
+}
+{
+	"_id" : ObjectId("6254f9c102962b4d0e5d6666"),
+	"id" : 2,
+	"StudName" : "Rohan",
+	"Grade" : "S",
+	"Hobbies" : "Skating"
+}
+> 
+[1]+  Stopped                 mongo
+bmsce@bmsce-Precision-T1700:~$ mongo
+MongoDB shell version v3.6.8
+connecting to: mongodb://127.0.0.1:27017
+Implicit session: session { "id" : UUID("aeaf7de9-f073-4194-b09c-d7b1caa83cd8") }
+MongoDB server version: 3.6.8
+Server has startup warnings: 
+2022-04-12T09:15:20.557+0530 I STORAGE  [initandlisten] 
+2022-04-12T09:15:20.557+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2022-04-12T09:15:20.557+0530 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2022-04-12T09:15:24.891+0530 I CONTROL  [initandlisten] 
+2022-04-12T09:15:24.891+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2022-04-12T09:15:24.892+0530 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2022-04-12T09:15:24.892+0530 I CONTROL  [initandlisten] 
+> db.student.find().sort({studname:1}).pretty()
+> db.student.find().sort({StudName:1}).pretty()
+> db.student.find()
+> db.student.find({})
+> DB
+function DB() {
+    [native code]
+}
+> db
+test
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+mitdb   0.000GB
+myDB    0.000GB
+> use myDB
+switched to db myDB
+> db.student.find({})
+{ "_id" : 1, "studname" : "Mithun", "grade" : "vii", "hobbies" : "internetsurfing" }
+{ "_id" : ObjectId("6254f83d02962b4d0e5d6665"), "id" : 1, "StudName" : "Ravi", "Grade" : "S", "Hobbies" : "Telling LIES" }
+{ "_id" : ObjectId("6254f9c102962b4d0e5d6666"), "id" : 2, "StudName" : "Rohan", "Grade" : "S", "Hobbies" : "Skating" }
+> db.student.find().sort({StudName:1}).pretty()
+{
+	"_id" : 1,
+	"studname" : "Mithun",
+	"grade" : "vii",
+	"hobbies" : "internetsurfing"
+}
+{
+	"_id" : ObjectId("6254f83d02962b4d0e5d6665"),
+	"id" : 1,
+	"StudName" : "Ravi",
+	"Grade" : "S",
+	"Hobbies" : "Telling LIES"
+}
+{
+	"_id" : ObjectId("6254f9c102962b4d0e5d6666"),
+	"id" : 2,
+	"StudName" : "Rohan",
+	"Grade" : "S",
+	"Hobbies" : "Skating"
+}
+> db.student.count()
+3
+> db.food.count()
+0
+> db.food.save({fruit:["grapes","mango","apple"]})
+WriteResult({ "nInserted" : 1 })
+> db.food.save({fruit:["bannana","mango"]})
+WriteResult({ "nInserted" : 1 })
+> db.food.save({fruit:["grapes","mango","cherry"]})
+WriteResult({ "nInserted" : 1 })
+> db.food.count()
+3
+> db.food.find({"fruit":{$sizq:2}})
+Error: error: {
+	"ok" : 0,
+	"errmsg" : "unknown operator: $sizq",
+	"code" : 2,
+	"codeName" : "BadValue"
+}
+> db.food.find({"fruit":{$size:2}})
+{ "_id" : ObjectId("62550589a310a746e0f30d14"), "fruit" : [ "bannana", "mango" ] }
+> db.food.find({})
+{ "_id" : ObjectId("62550576a310a746e0f30d13"), "fruit" : [ "grapes", "mango", "apple" ] }
+{ "_id" : ObjectId("62550589a310a746e0f30d14"), "fruit" : [ "bannana", "mango" ] }
+{ "_id" : ObjectId("6255059fa310a746e0f30d15"), "fruit" : [ "grapes", "mango", "cherry" ] }
