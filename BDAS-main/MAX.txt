@@ -1,0 +1,77 @@
+package wordcount12;
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.Mapper;
+import org.apache.hadoop.mapred.OutputCollector;
+
+import org.apache.hadoop.mapred.Reporter;
+public class WCMapper extends MapReduceBase implements
+Mapper<LongWritable,Text, Text, IntWritable>{
+// Map function
+public void map(LongWritable key, Text value, OutputCollector<Text,
+IntWritable> output, Reporter rep) throws IOException
+
+{
+String line = value.toString();
+//int prev=0;
+//int val=line.indexOf(" ");
+//int a =Integer.parseInt((line.substring(prev,val)));
+//prev=val+1;
+//val=line.indexOf(" ",prev);
+//int b=Integer.parseInt((line.substring(prev,val)));
+//prev=val+1;
+//int c=Integer.parseInt((line.substring(prev,val)));
+int maxi=-2;
+//
+//maxi=Math.max(a, b);
+
+for (String word : line.split(" "))
+{
+if (word.length() > 0)
+{
+maxi=max(maxi, Integer.parseInt((word)));
+//output.collect(new Text("maxnumber"), new IntWritable(Integer.parseInt((word))));
+}
+}
+output.collect(new Text("maxnumber"), new IntWritable(maxi));
+//}
+//}
+}
+public int max(int a ,int b) {
+if(a>b)return a;
+return b;
+}
+}
+
+
+
+
+
+reducer    
+
+package wordcount12;
+import java.io.IOException;
+import java.util.Iterator;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reducer;
+import org.apache.hadoop.mapred.Reporter;
+
+public class WCReducer extends MapReduceBase implements
+Reducer<Text,IntWritable, Text, IntWritable>{
+// Reduce function
+
+
+@Override
+public void reduce(Text key, Iterator<IntWritable> value, OutputCollector<Text, IntWritable> output, Reporter arg3)
+throws IOException {
+// TODO Auto-generated method stub
+//while(value.hasNext())
+output.collect(key,(value.next()));
+}
+}
