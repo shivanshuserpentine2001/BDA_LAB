@@ -1,0 +1,25 @@
+scala> val data=sc.textFile("/home/hduser/Desktop/sample.txt");
+data: org.apache.spark.rdd.RDD[String] = /home/hduser/Desktop/sample.txt MapPartitionsRDD[1] at textFile at <console>:24
+
+scala> data.collect;
+res1: Array[String] = Array(hi hw are ypu, how is your job, how is your family, how is your brother, how is your sister)
+
+scala> val splitdata=data.flatMap(line=>line.split(" "));
+splitdata: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[2] at flatMap at <console>:25
+
+scala> splitdata.collect;
+res2: Array[String] = Array(hi, hw, are, ypu, how, is, your, job, how, is, your, family, how, is, your, brother, how, is, your, sister)
+
+scala> val mapdata=splitdata.map(word=>(word,1));
+mapdata: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[3] at map at <console>:25
+
+scala> mapdata.collect;
+res3: Array[(String, Int)] = Array((hi,1), (hw,1), (are,1), (ypu,1), (how,1), (is,1), (your,1), (job,1), (how,1), (is,1), (your,1), (family,1), (how,1), (is,1), (your,1), (brother,1), (how,1), (is,1), (your,1), (sister,1))
+
+scala> val reducedata=mapdata.reduceByKey(_+_);
+reducedata: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[4] at reduceByKey at <console>:25
+
+scala> reducedata.collect;
+res4: Array[(String, Int)] = Array((are,1), (brother,1), (is,4), (sister,1), (family,1), (how,4), (ypu,1), (job,1), (hi,1), (hw,1), (your,4))
+
+scala> 

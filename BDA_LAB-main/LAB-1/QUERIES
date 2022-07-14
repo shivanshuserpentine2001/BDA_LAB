@@ -1,0 +1,61 @@
+cqlsh> CREATE KEYSPACE Employee WITH REPLICATION={'class':'SimpleStrategy','replication_factor':1};
+USE employee;
+cqlsh:employee> CREATE TABLE Employee_info(Emp_id int PRIMARY KEY,Emp_name text,Desg text,Doj timestamp,Salary float,dept text);
+cqlsh:employee> BEGIN BATCH
+            ... INSERT INTO
+            ... Employee_info(Emp_id,Emp_name,Desg,Doj,Salary,dept)
+            ... VALUES(123,'Sakshi','Manager','2000-09-24',650000,'Export')
+            ... INSERT INTO Employee_info(Emp_id,Emp_name,Desg,Doj,Salary,dept)
+            ... VALUES(121,'Ritvika','AsstManager','2001-01-04',620000,'Export')
+            ... INSERT INTO Employee_info(Emp_id,Emp_name,Desg,Doj,Salary,dept)
+            ... VALUES(131,'Priya','HR','1999-05-14',780000,'HR')
+            ... APPLY BATCH;
+cqlsh:employee> SELECT * FROM Employee_info;
+
+ emp_id | dept   | desg        | doj                             | emp_name | salary
+--------+--------+-------------+---------------------------------+----------+---------
+    123 | Export |     Manager | 2000-09-24 00:00:00.000000+0000 |   Sakshi | 6.5e+05
+    121 | Export | AsstManager | 2001-01-04 00:00:00.000000+0000 |  Ritvika | 6.2e+05
+    131 |     HR |          HR | 1999-05-14 00:00:00.000000+0000 |    Priya | 7.8e+05
+
+(3 rows)
+cqlsh:employee> UPDATE Employee_info SET Emp_name='Ritvika_Singh' WHERE Emp_id=121;
+cqlsh:employee> SELECT * FROM Employee_info;
+
+ emp_id | dept   | desg        | doj                             | emp_name      | salary
+--------+--------+-------------+---------------------------------+---------------+---------
+    123 | Export |     Manager | 2000-09-24 00:00:00.000000+0000 |        Sakshi | 6.5e+05
+    121 | Export | AsstManager | 2001-01-04 00:00:00.000000+0000 | Ritvika_Singh | 6.2e+05
+    131 |     HR |          HR | 1999-05-14 00:00:00.000000+0000 |         Priya | 7.8e+05
+
+(3 rows)
+cqlsh:employee> UPDATE Employee_info SET dept='import' WHERE Emp_id=121;
+cqlsh:employee> SELECT * FROM Employee_info;
+
+ emp_id | dept   | desg        | doj                             | emp_name      | salary
+--------+--------+-------------+---------------------------------+---------------+---------
+    123 | Export |     Manager | 2000-09-24 00:00:00.000000+0000 |        Sakshi | 6.5e+05
+    121 | import | AsstManager | 2001-01-04 00:00:00.000000+0000 | Ritvika_Singh | 6.2e+05
+    131 |     HR |          HR | 1999-05-14 00:00:00.000000+0000 |         Priya | 7.8e+05
+    
+    cqlsh:employee> ALTER TABLE Employee_info ADD projects set<text>;
+cqlsh:employee> SELECT * FROM Employee_info;
+
+ emp_id | dept   | desg        | doj                             | emp_name      | projects | salary
+--------+--------+-------------+---------------------------------+---------------+----------+---------
+    123 | Export |     Manager | 2000-09-24 00:00:00.000000+0000 |        Sakshi |     null | 6.5e+05
+    121 | import | AsstManager | 2001-01-04 00:00:00.000000+0000 | Ritvika_Singh |     null | 6.2e+05
+    131 |     HR |          HR | 1999-05-14 00:00:00.000000+0000 |         Priya |     null | 7.8e+05
+
+(3 rows)
+cqlsh:employee> UPDATE Employee_info SET projects={'proj1','proj2'} WHERE Emp_id=123;
+cqlsh:employee> SELECT * FROM Employee_info;
+
+ emp_id | dept   | desg        | doj                             | emp_name      | projects           | salary
+--------+--------+-------------+---------------------------------+---------------+--------------------+---------
+    123 | Export |     Manager | 2000-09-24 00:00:00.000000+0000 |        Sakshi | {'proj1', 'proj2'} | 6.5e+05
+    121 | import | AsstManager | 2001-01-04 00:00:00.000000+0000 | Ritvika_Singh |               null | 6.2e+05
+    131 |     HR |          HR | 1999-05-14 00:00:00.000000+0000 |         Priya |               null | 7.8e+05
+
+(3 rows)
+cqlsh:employee> 

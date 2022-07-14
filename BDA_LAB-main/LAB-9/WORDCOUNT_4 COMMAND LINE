@@ -1,0 +1,32 @@
+cala> val textFile=sc.textFile("/home/hduser/Desktop/sample.txt");
+textFile: org.apache.spark.rdd.RDD[String] = /home/hduser/Desktop/sample.txt MapPartitionsRDD[8] at textFile at <console>:24
+
+scala> val counts=textFile.flatMap(line=>line.split(" ")).map(word=>(word,1)).reduceByKey(_=_)
+<console>:25: error: reassignment to val
+       val counts=textFile.flatMap(line=>line.split(" ")).map(word=>(word,1)).reduceByKey(_=_)
+                                                                                           ^
+
+scala> val counts=textFile.flatMap(line=>line.split(" ")).map(word=>(word,1)).reduceByKey(_+_)
+counts: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[11] at reduceByKey at <console>:25
+
+scala> import scala.collection.immutable.ListMap
+import scala.collection.immutable.ListMap
+
+scala> val sorted=ListMap(counts.collect.sortWith(_._2>_._2):_*)
+sorted: scala.collection.immutable.ListMap[String,Int] = Map(is -> 4, how -> 4, your -> 4, are -> 1, brother -> 1, sister -> 1, family -> 1, ypu -> 1, job -> 1, hi -> 1, hw -> 1)
+
+scala> println(sorted)
+Map(is -> 4, how -> 4, your -> 4, are -> 1, brother -> 1, sister -> 1, family -> 1, ypu -> 1, job -> 1, hi -> 1, hw -> 1)
+
+scala> for((k,v)<-sorted)
+     | {
+     |  if(v>4)
+     |   {
+     |     print(k+",")
+     |      print(v)
+     |      println()
+     |   }
+     | }
+
+scala> 
+//SINCE SAMPLE TEXT FILE DOESNT HAVE WORD WITH FREQUENCY >4,NO OUTPUT

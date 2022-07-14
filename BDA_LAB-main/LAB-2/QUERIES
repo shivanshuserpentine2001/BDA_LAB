@@ -1,0 +1,23 @@
+cqlsh> create keyspace library with replication={'class':'SimpleStrategy','replication_factor':1};
+cqlsh> use library;
+cqlsh:library> create table library_info(stud_id varchar, counter_value counter,stud_name text,book_name varchar, 
+book_id varchar, date_of_issue timestamp,primary key(stud_id,stud_name,book_name,book_id,date_of_issue));
+cqlsh:library> update library.library_info set counter_value=counter_value+1 where stud_id='cs112' and stud_name='kundana' and book_name='spooky' and book_id='bk121' and date_of_issue='2020-11-19';cqlsh:library> update library.library_info set counter_value=counter_value+1 where stud_id='cs121' and stud_name='bobby' and book_name='spooky boy' and book_id='bk131' and date_of_issue='2020-11-16';cqlsh:library> update library.library_info set counter_value=counter_value+1 where stud_id='cs144' and stud_name='felix' and book_name='spooky man' and book_id='bk141' and date_of_issue='2019-03-03';
+cqlsh:library> select * from library_info;
+
+ stud_id | stud_name | book_name  | book_id | date_of_issue                   | counter_value
+---------+-----------+------------+---------+---------------------------------+---------------
+   cs121 |     bobby | spooky boy |   bk131 | 2020-11-16 00:00:00.000000+0000 |             1
+   cs112 |   kundana |     spooky |   bk121 | 2020-11-19 00:00:00.000000+0000 |             1
+   cs144 |     felix | spooky man |   bk141 | 2019-03-03 00:00:00.000000+0000 |             1
+
+(3 rows)
+cqlsh:library> update library.library_info set counter_value=counter_value+1 where stud_id='cs112' and stud_name='kundana' and book_name='spooky' and book_id='bk121' and date_of_issue='2020-11-19';
+cqlsh:library> select * from library_info;
+ stud_id | stud_name | book_name  | book_id | date_of_issue                   | counter_value
+---------+-----------+------------+---------+---------------------------------+---------------
+   cs121 |     bobby | spooky boy |   bk131 | 2020-11-16 00:00:00.000000+0000 |             1
+   cs112 |   kundana |     spooky |   bk121 | 2020-11-19 00:00:00.000000+0000 |             2
+   cs144 |     felix | spooky man |   bk141 | 2019-03-03 00:00:00.000000+0000 |             1
+
+(3 rows)

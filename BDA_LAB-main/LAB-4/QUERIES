@@ -1,0 +1,99 @@
+hduser@bmsce-Precision-T1700:~$ start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh
+Starting namenodes on [localhost]
+hduser@localhost's password: 
+localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-bmsce-Precision-T1700.out
+hduser@localhost's password: 
+localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-bmsce-Precision-T1700.out
+Starting secondary namenodes [0.0.0.0]
+hduser@0.0.0.0's password: 
+0.0.0.0: starting secondarynamenode, logging to /usr/local/hadoop/logs/hadoop-hduser-secondarynamenode-bmsce-Precision-T1700.out
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-bmsce-Precision-T1700.out
+hduser@localhost's password: 
+localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-bmsce-Precision-T1700.out
+hduser@bmsce-Precision-T1700:~$ jps
+4644 NameNode
+5450 SecondaryNameNode
+6666 NodeManager
+4827 DataNode
+5710 ResourceManager
+6799 Jps
+hduser@bmsce-Precision-T1700:~$ ls
+ b                    'Packet Tracer 7.2.1 for Linux 64 bit.tar.gz'
+ c                     Pictures
+ derby.log             pig_1564816082257.log
+ Desktop               pt
+ Documents             PT72Installer
+ Downloads             Public
+ eclipse-workspace     R
+ examples.desktop      snap
+ hadoop-2.6.0.tar.gz   Templates
+ hive                  toinstalledlist
+ metastore_db          Videos
+ Music
+hduser@bmsce-Precision-T1700:~$ hadoop fs -ls /
+Found 2 items
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mkdir /abc
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /
+Found 3 items
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 09:38 /abc
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -touchz /abc/lab.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /abc
+Found 1 items
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:39 /abc/lab.txt
+hduser@bmsce-Precision-T1700:~$ ls
+ b                    'Packet Tracer 7.2.1 for Linux 64 bit.tar.gz'
+ c                     Pictures
+ derby.log             pig_1564816082257.log
+ Desktop               pt
+ Documents             PT72Installer
+ Downloads             Public
+ eclipse-workspace     R
+ examples.desktop      snap
+ hadoop-2.6.0.tar.gz   Templates
+ hive                  toinstalledlist
+ metastore_db          Videos
+ Music
+hduser@bmsce-Precision-T1700:~$ vi new.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put new.txt /abc/newhadoop.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cat /abc/newhadoop.txt
+Cbbbbb
+fgggjyujyhcvdgrbghh
+hduser@bmsce-Precision-T1700:~$ cd /Desktop
+bash: cd: /Desktop: No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /
+Found 3 items
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 09:48 /abc
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -copyFromLocal /home/hduser/Desktop/Welcome.txt /abc/newWelcome.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cat /abc/newWelcome.txt
+nnkjkdngdmglc
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -get /abc/wc.txt /home/hduser/Downloads/wcc.txt
+get: `/abc/wc.txt': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -get /abc/newWelcome.txt /home/hduser/Downloads/wcc.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -copyToLocal /abc/newWelcome.txt /home/hduser/Downloads
+hduser@bmsce-Precision-T1700:~$ hadoop fs -mv /abc /FFF
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /
+Found 3 items
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 10:08 /FFF
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+hduser@bmsce-Precision-T1700:~$ hadoop fs -cp /FFF/new.txt /tmp
+cp: `/FFF/new.txt': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /FFF
+Found 3 items
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:39 /FFF/lab.txt
+-rw-r--r--   1 hduser supergroup         14 2022-05-31 10:08 /FFF/newWelcome.txt
+-rw-r--r--   1 hduser supergroup         27 2022-05-31 09:48 /FFF/newhadoop.txt
+hduser@bmsce-Precision-T1700:~$ hadoop fs -cp /FFF/lab.txt /tmp
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /tmp
+Found 2 items
+drwx-wx-wx   - hduser supergroup          0 2019-08-01 16:19 /tmp/hive
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 10:19 /tmp/lab.txt
+hduser@bmsce-Precision-T1700:~$ 
