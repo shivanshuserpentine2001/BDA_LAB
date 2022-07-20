@@ -1,0 +1,12 @@
+In terminal, cd Desktop To make input file -
+touch fname.txt
+
+In another terminal, start-all.sh
+Give password bmsce
+jps 
+hadoop fs -ls /
+Select a directory 
+hadoop fs -copyFromLocal inputfilePath hdfsDestinationDirPath
+
+[10:09 AM, 7/20/2022] Priya Potana: hadoop jar jarFilePath driverClassName inputFilePath outputFileName
+[10:10 AM, 7/20/2022] Priya Potana: hadoop fs -cat /outputFile/*
